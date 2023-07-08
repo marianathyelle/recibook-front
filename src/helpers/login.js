@@ -12,5 +12,7 @@ export const createOktaConfig = async () => {
     oktaConfig.requireHardwareBackedKeyStore = !isEmulator;
   }
 
-  await createConfig(oktaConfig);
+  console.log(JSON.stringify(oktaConfig))
+
+  return await createConfig(oktaConfig);
 }

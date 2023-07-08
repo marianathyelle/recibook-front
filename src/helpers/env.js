@@ -1,3 +1,5 @@
 import {OKTA_CONFIG} from '@env';
 
-export const getOktaConfig = () => JSON.parse(OKTA_CONFIG);
+export const getOktaConfig = () => {
+  return JSON.parse(OKTA_CONFIG);
+}
