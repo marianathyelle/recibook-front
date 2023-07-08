@@ -1,17 +1,18 @@
 import React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-  View,
+  Text
 } from 'react-native';
+
+import OktaConfigProvider from './src/components/okta-provider';
 
 function App() {
   return (
-    <SafeAreaView>
-      <Text>hello world</Text>
-    </SafeAreaView>
+    <OktaConfigProvider>
+      <SafeAreaView>
+        <Text>hello world</Text>
+      </SafeAreaView>
+    </OktaConfigProvider>
   );
 }
 
