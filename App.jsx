@@ -1,51 +1,50 @@
-import React, { useEffect } from 'react';
-import {
-  Button,
-  SafeAreaView,
-  Text
-} from 'react-native';
-import { createOktaConfig } from "./src/helpers/login";
+import React, {useEffect} from 'react';
+import {Button, SafeAreaView, Text, View} from 'react-native';
+import {createOktaConfig} from './src/helpers/login';
 
-import { EventEmitter, getAccessToken, isAuthenticated, signInWithBrowser } from "@okta/okta-react-native";
+import {
+  EventEmitter,
+  getAccessToken,
+  isAuthenticated,
+  signInWithBrowser,
+} from '@okta/okta-react-native';
 
 function App() {
-
-  const [authenticated, setauthenticated] = React.useState(false)
-  const [token, setAccessToken] = React.useState("")
+  const [authenticated, setauthenticated] = React.useState(false);
+  const [token, setAccessToken] = React.useState('');
 
   const checkauthenticated = async () => {
     const result = await isAuthenticated();
     if (result.authenticated !== authenticated) {
       const newACcessToken = await getAccessToken();
-      setauthenticated(result.authenticated)
-      console.log(newACcessToken)
+      setauthenticated(result.authenticated);
+      console.log(newACcessToken);
     }
-  }
+  };
 
   const initializeOktaConfig = async () => {
     try {
       const oktaInitialized = await createOktaConfig();
-      console.log(oktaInitialized)
+      console.log(oktaInitialized);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
-
     initializeOktaConfig().then(() => {
-      checkauthenticated()
-    })
+      checkauthenticated();
+    });
 
     EventEmitter.addListener('signInSuccess', function (result) {
-      if (result.resolve_type !== "authorized") {
+      if (result.resolve_type !== 'authorized') {
         console.warn(error);
         return;
       }
 
-      setauthenticated(true)
+      setauthenticated(true);
       setAccessToken(result.access_token);
-      console.log("LOGGED IN!")
+      console.log('LOGGED IN!');
     });
 
     EventEmitter.addListener('signOutSuccess', function (error) {
@@ -65,25 +64,26 @@ function App() {
       console.warn(error);
     });
 
-
     return () => {
       EventEmitter.removeAllListeners('signInSuccess');
       EventEmitter.removeAllListeners('signOutSuccess');
       EventEmitter.removeAllListeners('onError');
       EventEmitter.removeAllListeners('onCancelled');
-    }
-  }, [])
+    };
+  }, []);
 
   const onLoginClick = async () => {
-    console.log("onLoginClick")
-    await signInWithBrowser()
-  }
+    console.log('onLoginClick');
+    await signInWithBrowser();
+  };
 
   return (
     <SafeAreaView>
-      <Button title="Sign-in" onPress={onLoginClick}>Sign-in</Button>
+      <Button title="Sign-in" onPress={onLoginClick}>
+        Sign-in
+      </Button>
 
-      {authenticated ? <Text>Is Signed In!!!</Text> : <Text>Not signed-in</Text>}
+      {authenticated ? <Text>Signed-in</Text> : <Text>Not signed-in</Text>}
     </SafeAreaView>
   );
 }
