@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Button, SafeAreaView, Text, View} from 'react-native';
+import {Button, SafeAreaView, Text, StyleSheet} from 'react-native';
 import {createOktaConfig} from './src/helpers/login';
 
 import {
@@ -9,23 +9,23 @@ import {
   signInWithBrowser,
 } from '@okta/okta-react-native';
 
+import {colors} from './src/styles/base';
+
 function App() {
-  const [authenticated, setauthenticated] = React.useState(false);
+  const [authenticated, setAuthenticated] = React.useState(false);
   const [token, setAccessToken] = React.useState('');
 
-  const checkauthenticated = async () => {
+  const checkAuthentication = async () => {
     const result = await isAuthenticated();
     if (result.authenticated !== authenticated) {
-      const newACcessToken = await getAccessToken();
-      setauthenticated(result.authenticated);
-      console.log(newACcessToken);
+      await getAccessToken();
+      setAuthenticated(result.authenticated);
     }
   };
 
   const initializeOktaConfig = async () => {
     try {
-      const oktaInitialized = await createOktaConfig();
-      console.log(oktaInitialized);
+      await createOktaConfig();
     } catch (error) {
       console.error(error);
     }
@@ -33,27 +33,22 @@ function App() {
 
   useEffect(() => {
     initializeOktaConfig().then(() => {
-      checkauthenticated();
+      checkAuthentication();
     });
 
     EventEmitter.addListener('signInSuccess', function (result) {
       if (result.resolve_type !== 'authorized') {
-        console.warn(error);
         return;
       }
 
-      setauthenticated(true);
+      setAuthenticated(true);
       setAccessToken(result.access_token);
-      console.log('LOGGED IN!');
     });
 
     EventEmitter.addListener('signOutSuccess', function (error) {
       if (error) {
-        console.warn(error);
         return;
       }
-
-      console.log('Logged out!');
     });
 
     EventEmitter.addListener('onError', function (error) {
@@ -73,12 +68,11 @@ function App() {
   }, []);
 
   const onLoginClick = async () => {
-    console.log('onLoginClick');
     await signInWithBrowser();
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <Button title="Sign-in" onPress={onLoginClick}>
         Sign-in
       </Button>
@@ -87,5 +81,12 @@ function App() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.tertiary,
+  },
+});
 
 export default App;
