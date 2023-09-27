@@ -1,12 +1,14 @@
 import React from "react";
-import {View, Text, useState, Pressable} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {Icon} from '@rneui/themed';
 
 import {ANDROID_CLIENT_ID, IOS_CLIENT_ID} from '@env';
 
+import {styles} from './styles';
 import {colors} from '../../styles/base';
 
 export const Login = () => {
@@ -37,11 +39,19 @@ export const Login = () => {
   };
 
   return (
-    <View>
-      <Text>Hello!</Text>
-      <Pressable onPress={googleSignin}>
-        <Text>Sign in with Google</Text>
-      </Pressable>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Image
+          source={require('../../assets/images/logo.png')}
+          style={{width: 250, height: 250}}
+        />
+        <Pressable onPress={googleSignin} style={styles.button}>
+          <View style={styles.buttonContent}>
+            <Icon name="google" type="font-awesome" color={colors.primary} />
+            <Text style={styles.buttonText}>Sign in with Google</Text>
+          </View>
+        </Pressable>
+      </View>
     </View>
   );
 };
