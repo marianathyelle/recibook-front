@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "recibook-logo-transparent.png",
+      "filename" : "New-ReciBook-logo-transparent.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "recibook-logo-transparent 1.png",
+      "filename" : "New-ReciBook-logo-transparent@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "recibook-logo-transparent 2.png",
+      "filename" : "New-ReciBook-logo-transparent@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
